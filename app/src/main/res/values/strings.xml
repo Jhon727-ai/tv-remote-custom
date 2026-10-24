@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TV Remote</string>
+    <string name="accessibility_service_description">TV Remote Custom - digunakan untuk kontrol remote virtual lewat web UI</string>
+</resources>

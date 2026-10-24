@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="#1a1a1a">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TV Remote Server"
+        android:textSize="28sp"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Status: CHECKING..."
+        android:textSize="18sp"
+        android:textColor="#ff4444"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tvUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="http://127.0.0.1:8080"
+        android:textSize="16sp"
+        android:textColor="#00ff88"
+        android:background="#2a2a2a"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/btnEnable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ENABLE ACCESSIBILITY"
+        android:textSize="16sp"
+        android:textColor="#ffffff"
+        android:background="#333333"
+        android:padding="16dp"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/btnStart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="START SERVER"
+        android:textSize="16sp"
+        android:textColor="#ffffff"
+        android:background="#00aa44"
+        android:padding="16dp"
+        android:gravity="center"
+        android:enabled="false"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Buka browser TV/HP ke URL di atas untuk kontrol"
+        android:textSize="12sp"
+        android:textColor="#888888"
+        android:layout_marginTop="16dp"
+        android:gravity="center"/>
+
+</LinearLayout>
