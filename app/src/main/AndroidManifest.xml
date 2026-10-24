@@ -40,7 +40,7 @@
         <service
             android:name=".RemoteForegroundService"
             android:exported="false"
-            android:foregroundServiceType="mediaProjection" />
+            android:foregroundServiceType="dataSync" />
 
     </application>
 
