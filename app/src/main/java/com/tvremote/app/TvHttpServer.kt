@@ -15,7 +15,7 @@ class TvHttpServer(private val context: Context, private val port: Int = 8080) :
 
         return when {
             uri == "/" && method == Method.GET -> serveHtml()
-            uri == "/api/key" && method == Method.POST -> handleKey(session)
+            uri == "/api/action" && method == Method.POST -> handleAction(session)
             uri == "/api/text" && method == Method.POST -> handleText(session)
             uri == "/api/app" && method == Method.POST -> handleApp(session)
             uri == "/api/status" && method == Method.GET -> handleStatus()
@@ -153,24 +153,18 @@ class TvHttpServer(private val context: Context, private val port: Int = 8080) :
                 </div>
 
                 <div class="row">
-                    <div class="btn-small" onclick="sendKey(4)">Back</div>
-                    <div class="btn-small" onclick="sendKey(3)">Home</div>
-                    <div class="btn-small" onclick="sendKey(82)">Menu</div>
+                    <div class="btn-small" onclick="sendAction(1)">Back</div>
+                    <div class="btn-small" onclick="sendAction(2)">Home</div>
+                    <div class="btn-small" onclick="sendAction(3)">Recent</div>
                 </div>
                 <div class="row">
-                    <div class="btn-small" onclick="sendKey(24)">Vol+</div>
-                    <div class="btn-small" onclick="sendKey(25)">Vol-</div>
-                    <div class="btn-small" onclick="sendKey(164)">Mute</div>
+                    <div class="btn-small" onclick="sendAction(4)">Notif</div>
+                    <div class="btn-small" onclick="sendAction(5)">Quickset</div>
                 </div>
                 <div class="row">
                     <div class="btn-small primary" onclick="launch('com.mediatek.wwtv.tvcenter')">TV</div>
                     <div class="btn-small primary" onclick="launch('com.google.android.apps.youtube.tv')">YT</div>
                     <div class="btn-small primary" onclick="launch('com.netflix.ninja')">NETFLIX</div>
-                </div>
-                <div class="row">
-                    <div class="btn-small" onclick="sendKey(26)">Power</div>
-                    <div class="btn-small" onclick="sendKey(85)">Play</div>
-                    <div class="btn-small" onclick="sendKey(86)">Pause</div>
                 </div>
 
                 <input type="text" id="textInput" class="text-input" placeholder="Ketik teks untuk search...">
@@ -209,15 +203,15 @@ class TvHttpServer(private val context: Context, private val port: Int = 8080) :
                         }
                     }
 
-                    async function sendKey(code) {
+                    async function sendAction(action) {
                         try {
-                            const r = await fetch('/api/key', {
+                            const r = await fetch('/api/action', {
                                 method: 'POST',
                                 headers: {'Content-Type': 'application/json'},
-                                body: JSON.stringify({keycode: code})
+                                body: JSON.stringify({action: action})
                             });
                             const data = await r.json();
-                            log(data.ok ? 'Key sent: ' + code : 'Key failed', data.ok ? 'success' : 'error');
+                            log(data.ok ? 'Action sent: ' + action : 'Action failed', data.ok ? 'success' : 'error');
                         } catch (e) {
                             log('Error: ' + e.message, 'error');
                         }
@@ -262,15 +256,15 @@ class TvHttpServer(private val context: Context, private val port: Int = 8080) :
         return newFixedLengthResponse(Response.Status.OK, MIME_HTML, html)
     }
 
-    private fun handleKey(session: IHTTPSession): Response {
+    private fun handleAction(session: IHTTPSession): Response {
         val params = mutableMapOf<String, String>()
         session.parseBody(params)
         val body = params["postData"] ?: return error("No data")
 
         return try {
             val json = JSONObject(body)
-            val keyCode = json.getInt("keycode")
-            val ok = service?.sendKey(keyCode) ?: false
+            val action = json.getInt("action")
+            val ok = service?.globalAction(action) ?: false
             jsonResponse(mapOf("ok" to ok))
         } catch (e: Exception) {
             error("Bad request: ${e.message}")
@@ -314,7 +308,7 @@ class TvHttpServer(private val context: Context, private val port: Int = 8080) :
 
     private fun jsonResponse(data: Map<String, Any>): Response {
         val json = JSONObject(data).toString()
-        return newFixedLengthResponse(Response.Status.OK, MIME_JSON, json)
+        return newFixedLengthResponse(Response.Status.OK, "application/json", json)
     }
 
     private fun error(msg: String): Response {

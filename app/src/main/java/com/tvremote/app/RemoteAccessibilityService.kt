@@ -1,11 +1,9 @@
 package com.tvremote.app
 
 import android.accessibilityservice.AccessibilityService
-import android.accessibilityservice.GestureDescription
-import android.graphics.Path
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 
@@ -34,16 +32,13 @@ class RemoteAccessibilityService : AccessibilityService() {
         instance = null
     }
 
-    fun sendKey(keyCode: Int): Boolean {
+    fun globalAction(action: Int): Boolean {
         return try {
-            val event = KeyEvent(KeyEvent.ACTION_DOWN, keyCode)
-            val event2 = KeyEvent(KeyEvent.ACTION_UP, keyCode)
-            sendKeyEvent(event)
-            sendKeyEvent(event2)
-            Log.d("TVRemote", "Sent keycode: $keyCode")
-            true
+            val ok = performGlobalAction(action)
+            Log.d("TVRemote", "Global action: $action -> $ok")
+            ok
         } catch (e: Exception) {
-            Log.e("TVRemote", "Failed to send keycode: $keyCode", e)
+            Log.e("TVRemote", "Global action failed: $action", e)
             false
         }
     }
