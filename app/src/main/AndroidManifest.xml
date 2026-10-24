@@ -9,7 +9,7 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@android:drawable/ic_menu_info_details"
         android:label="TV Remote"
         android:theme="@style/Theme.AppCompat"
         android:hardwareAccelerated="true">
